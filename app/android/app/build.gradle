@@ -40,10 +40,10 @@ android {
 
     buildTypes {
         debug {
-            debuggable nxApp.debuggable as Boolean
+            debuggable = nxApp.debuggable as Boolean
         }
         release {
-            debuggable false
+            debuggable = false
         }
     }
 

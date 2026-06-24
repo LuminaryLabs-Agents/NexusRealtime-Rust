@@ -37,3 +37,10 @@ cargo test --workspace
 cargo install cargo-ndk --locked
 cargo ndk -t arm64-v8a -o app/android/app/src/main/jniLibs build --release -p nexus-android-bridge
 (cd app/android && gradle --init-script init.gradle --no-daemon assembleDebug)
+
+APK_DIR="app/android/app/build/outputs/apk/debug"
+APK_PATH="${APK_DIR}/app-debug.apk"
+test -f "${APK_PATH}"
+echo "Built APK: ${APK_PATH}"
+ls -la "${APK_DIR}"
+unzip -l "${APK_PATH}" | grep -E "lib/arm64-v8a/libnexus_android_bridge.so|assets/nexus/xr-house-demo/project.json|assets/nexus/xr-house-demo/host.adaptive.json|assets/nexus/xr-house-demo/interaction.grab.json|AndroidManifest.xml"

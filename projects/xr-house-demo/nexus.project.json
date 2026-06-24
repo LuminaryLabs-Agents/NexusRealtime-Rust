@@ -1,8 +1,43 @@
 {
   "id": "xr-house-demo",
   "name": "NexusRealtime XR House Demo",
-  "target": "quest-openxr",
+  "target": "adaptive-xr",
   "entrySequence": "scene.sequence.json",
-  "kits": ["xr-input-kit", "xr-grab-throw-kit", "simple-rigid-body-kit", "toon-visual-kit", "sky-gradient-kit"],
-  "renderer": {"stereo": true, "toonBands": 4, "fallback": "android-canvas-demo"}
+  "kits": [
+    "xr-input-kit",
+    "xr-grab-throw-kit",
+    "simple-rigid-body-kit",
+    "toon-visual-kit",
+    "sky-gradient-kit"
+  ],
+  "hostProfiles": [
+    {
+      "id": "android-canvas",
+      "mode": "android-canvas",
+      "stereo": false,
+      "swapchain": "not-required",
+      "input": "pointer-only"
+    },
+    {
+      "id": "stereo-panel",
+      "mode": "stereo-panel",
+      "stereo": true,
+      "swapchain": "optional-stereo-layer",
+      "input": "synthetic-stereo-hands"
+    },
+    {
+      "id": "quest-openxr",
+      "mode": "quest-openxr",
+      "stereo": true,
+      "swapchain": "required-open-xr-projection",
+      "input": "open-xr-actions"
+    }
+  ],
+  "renderer": {
+    "mode": "adaptive-host-selected",
+    "stereo": true,
+    "toonBands": 4,
+    "outline": "sigmoid-depth-normal",
+    "sky": "gradient-horizon"
+  }
 }

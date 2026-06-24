@@ -17,3 +17,5 @@ jobs:
           targets: aarch64-linux-android
       - name: Test Rust workspace
         run: cargo test --workspace
+      - name: Echo build
+        run: echo ready

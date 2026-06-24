@@ -1,0 +1,8 @@
+target/
+.gradle/
+build/
+app/android/.gradle/
+app/android/app/build/
+app/android/app/src/main/jniLibs/
+generated/*.json
+.DS_Store

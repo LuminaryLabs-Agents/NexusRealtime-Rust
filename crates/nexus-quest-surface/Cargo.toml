@@ -1,0 +1,9 @@
+[package]
+name = "nexus-quest-surface"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+nexus-command-buffer = { path = "../nexus-command-buffer" }
+nexus-host = { path = "../nexus-host" }

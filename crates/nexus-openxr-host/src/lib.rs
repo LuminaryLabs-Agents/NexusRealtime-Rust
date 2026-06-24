@@ -1,4 +1,5 @@
 use nexus_adaptive_host::{AdaptiveHostProfile, SwapchainPolicy};
+use nexus_webxr_adapter::{WebXrHostCapabilities, WebXrLayerPacket, WebXrSessionRequest};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -36,6 +37,24 @@ impl OpenXrHostPlan {
     pub fn requires_projection_swapchain(&self) -> bool {
         self.profile.swapchain == SwapchainPolicy::RequiredOpenXrProjection && self.eye_count == 2
     }
+
+    pub fn webxr_capabilities(&self) -> WebXrHostCapabilities {
+        WebXrHostCapabilities::quest_openxr_vulkan()
+    }
+
+    pub fn default_session_request(&self) -> WebXrSessionRequest {
+        WebXrSessionRequest::immersive_vr_local_floor()
+    }
+
+    pub fn projection_layer_packet(&self) -> WebXrLayerPacket {
+        WebXrLayerPacket {
+            layer_id: "primary-projection".to_string(),
+            eye_count: self.eye_count,
+            swapchain_policy: "required-open-xr-projection".to_string(),
+            color_format: "rgba8-srgb".to_string(),
+            depth_format: Some("depth24".to_string()),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
@@ -63,5 +82,12 @@ mod tests {
         let plan = OpenXrHostPlan::quest_house_demo();
         assert!(plan.requires_projection_swapchain());
         assert_eq!(default_eye_views().len(), 2);
+    }
+
+    #[test]
+    fn quest_plan_exposes_webxr_capabilities() {
+        let plan = OpenXrHostPlan::quest_house_demo();
+        assert!(plan.webxr_capabilities().supports_request(&plan.default_session_request()));
+        assert_eq!(plan.projection_layer_packet().eye_count, 2);
     }
 }

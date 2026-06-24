@@ -1,0 +1,14 @@
+[package]
+name = "nexus-android-bridge"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+anyhow.workspace = true
+jni.workspace = true
+nexus-host = { path = "../nexus-host" }
+once_cell.workspace = true
+serde_json.workspace = true

@@ -17,3 +17,7 @@ jobs:
           targets: aarch64-linux-android
       - name: Build APK
         run: make apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexusrealtime-rust-debug-apk
+          path: app/android/app/build/outputs/apk/debug/

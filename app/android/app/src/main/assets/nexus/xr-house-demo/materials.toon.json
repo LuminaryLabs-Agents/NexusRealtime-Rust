@@ -1,0 +1,8 @@
+{
+  "materials": [
+    {"id": "toon-house", "baseColor": [0.92, 0.72, 0.45, 1.0], "bands": 4, "ramp": [0.42, 0.62, 0.82, 1.08]},
+    {"id": "toon-roof", "baseColor": [0.55, 0.22, 0.16, 1.0], "bands": 4, "ramp": [0.40, 0.60, 0.84, 1.05]},
+    {"id": "toon-blue-prop", "baseColor": [0.28, 0.48, 0.95, 1.0], "bands": 4, "ramp": [0.38, 0.58, 0.82, 1.10]}
+  ],
+  "outline": {"mode": "sigmoid-depth-normal", "color": [0.04, 0.035, 0.03, 1.0], "width": 1.6, "threshold": 0.08, "slope": 22.0}
+}

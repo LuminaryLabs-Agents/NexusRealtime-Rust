@@ -1,0 +1,10 @@
+{
+  "type": "gradient-skybox",
+  "zenith": [0.18, 0.38, 0.92],
+  "upper": [0.42, 0.68, 1.0],
+  "horizon": [1.0, 0.78, 0.48],
+  "ground": [0.38, 0.29, 0.18],
+  "sunDirection": [0.45, 0.72, -0.3],
+  "sunColor": [1.0, 0.88, 0.62],
+  "sunSize": 0.035
+}

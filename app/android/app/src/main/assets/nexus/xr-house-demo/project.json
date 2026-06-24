@@ -1,0 +1,8 @@
+{
+  "id": "xr-house-demo",
+  "name": "NexusRealtime XR House Demo",
+  "target": "quest-openxr",
+  "entrySequence": "scene.sequence.json",
+  "runtime": "rust-host",
+  "renderer": {"stereo": true, "toonBands": 4, "outline": "sigmoid-depth-normal"}
+}

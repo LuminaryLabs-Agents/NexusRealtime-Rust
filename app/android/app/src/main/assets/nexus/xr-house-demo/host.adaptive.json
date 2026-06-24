@@ -1,5 +1,6 @@
 {
   "schema": "nexus.adaptive-host.v1",
+  "adapter": "nexus-webxr-adapter",
   "defaultProfile": "android-canvas",
   "profiles": [
     {
@@ -27,7 +28,13 @@
       "swapchain": "required-open-xr-projection",
       "input": "open-xr-actions",
       "targetFrameRate": 72,
-      "renderScale": 1.0
+      "renderScale": 1.0,
+      "webxr": {
+        "mode": "immersive-vr",
+        "referenceSpace": "local-floor",
+        "layer": "projection",
+        "backend": "vulkan"
+      }
     }
   ]
 }

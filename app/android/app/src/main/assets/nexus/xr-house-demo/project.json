@@ -1,8 +1,20 @@
 {
   "id": "xr-house-demo",
   "name": "NexusRealtime XR House Demo",
-  "target": "quest-openxr",
+  "target": "webxr-adaptive-host",
   "entrySequence": "scene.sequence.json",
-  "runtime": "rust-host",
-  "renderer": {"stereo": true, "toonBands": 4, "outline": "sigmoid-depth-normal"}
+  "runtime": "nexus-webxr-adapter",
+  "webxr": {
+    "mode": "immersive-vr",
+    "requiredFeatures": ["local-floor"],
+    "optionalFeatures": ["hand-tracking", "anchors", "haptics"]
+  },
+  "renderer": {
+    "mode": "descriptor-consumer",
+    "preferredBackend": "vulkan",
+    "fallbackBackend": "gles",
+    "stereo": true,
+    "toonBands": 4,
+    "outline": "sigmoid-depth-normal"
+  }
 }

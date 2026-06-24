@@ -1,0 +1,11 @@
+{
+  "id": "xr-house-demo",
+  "meshes": [
+    {"id": "house", "kind": "procedural-house"},
+    {"id": "blue-cube", "kind": "cube"},
+    {"id": "red-ball", "kind": "sphere"},
+    {"id": "mug", "kind": "cylinder"}
+  ],
+  "materials": ["toon-house", "toon-roof", "toon-blue-prop"],
+  "descriptors": ["host.adaptive.json", "interaction.grab.json", "materials.toon.json"]
+}

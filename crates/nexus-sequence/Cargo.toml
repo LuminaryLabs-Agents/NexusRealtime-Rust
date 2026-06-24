@@ -1,0 +1,10 @@
+[package]
+name = "nexus-sequence"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+nexus-command-buffer = { path = "../nexus-command-buffer" }
+serde.workspace = true
+serde_json.workspace = true

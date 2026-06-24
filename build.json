@@ -1,0 +1,65 @@
+{
+  "schema": "nexusrealtime-rust.build.v1",
+  "app": {
+    "name": "NexusRealtime XR House",
+    "namespace": "dev.luminarylabs.nexusrealtime",
+    "applicationId": "dev.luminarylabs.nexusrealtime.rust",
+    "versionCode": 1,
+    "versionName": "0.1.0",
+    "debuggable": true
+  },
+  "android": {
+    "compileSdk": 35,
+    "minSdk": 29,
+    "targetSdk": 35,
+    "buildTools": "35.0.0",
+    "ndkVersion": "27.0.12077973",
+    "abiFilters": ["arm64-v8a"]
+  },
+  "openxr": {
+    "enabled": true,
+    "immersiveHmd": true,
+    "headtrackingRequired": false,
+    "loaderDependency": "org.khronos.openxr:openxr_loader_for_android:1.0.34",
+    "sessionMode": "immersive-vr",
+    "referenceSpace": "local-floor",
+    "preferredBackend": "vulkan",
+    "fallbackBackend": "gles"
+  },
+  "quest": {
+    "targets": ["quest-2", "quest-3", "quest-pro"],
+    "baselineDevice": "quest-2",
+    "targetRefreshRate": 72,
+    "renderScale": 1.0,
+    "msaa": 2
+  },
+  "project": {
+    "id": "xr-house-demo",
+    "assetRoot": "assets/nexus/xr-house-demo",
+    "entrySequence": "scene.sequence.json",
+    "runtime": "nexus-webxr-adapter"
+  },
+  "repos": {
+    "core": "https://github.com/LuminaryLabs-Dev/NexusRealtime.git",
+    "protokits": "https://github.com/LuminaryLabs-Agents/NexusRealtime-ProtoKits.git"
+  },
+  "artifacts": {
+    "githubArtifactName": "nexusrealtime-rust-debug-apk",
+    "apkFileName": "app-debug.apk",
+    "discordFileName": "nexusrealtime-rust-debug.apk"
+  },
+  "discord": {
+    "enabled": true,
+    "env": "DISCORD_WEBHOOK_URL",
+    "message": "NexusRealtime Rust APK build"
+  },
+  "validation": {
+    "requiredApkEntries": [
+      "AndroidManifest.xml",
+      "lib/arm64-v8a/libnexus_android_bridge.so",
+      "assets/nexus/xr-house-demo/project.json",
+      "assets/nexus/xr-house-demo/host.adaptive.json",
+      "assets/nexus/xr-house-demo/interaction.grab.json"
+    ]
+  }
+}

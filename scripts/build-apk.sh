@@ -15,7 +15,7 @@ python3 - <<'PY'
 from pathlib import Path
 repo = 'reposito' + 'ries'
 plug = 'pluginManagement {\n    ' + repo + ' {\n        google()\n        mavenCentral()\n        gradlePluginPortal()\n    }\n}\n'
-deps = 'dependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\n    ' + repo + ' {\n        google()\n        mavenCentral()\n    }\n}\n'
+deps = 'dependencyResolutionManagement {\n    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)\n    ' + repo + ' {\n        google()\n        mavenCentral()\n    }\n}\n'
 Path('app/android/settings.gradle').write_text(plug + '\n' + deps + '\nrootProject.name = \'NexusRealtimeRustHost\'\ninclude \':app\'\n')
 Path('app/android/init.gradle').write_text('allprojects {\n    ' + repo + ' {\n        google()\n        mavenCentral()\n    }\n}\n')
 app = Path('app/android/app/build.gradle')

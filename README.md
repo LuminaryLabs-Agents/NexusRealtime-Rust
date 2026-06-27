@@ -35,6 +35,18 @@ Host / presentation / artifact domains
   build artifact logs
 ```
 
+Important local kit files:
+
+```txt
+local-kits/README.md
+local-kits/ARCHITECTURE.md
+local-kits/PROMOTION_MAP.md
+local-kits/native-host-domain-kits.mjs
+local-kits/examples/native-host-composition.mjs
+local-kits/tests/native-host-domain-kits.test.mjs
+local-kits/targets/README.md
+```
+
 Run the local kit smoke test with:
 
 ```bash

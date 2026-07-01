@@ -510,7 +510,7 @@ fn normalize_web_bundle(
 
         if is_vite {
             let out_dir = context.web_dir.display().to_string();
-            let mut command = Command::new("npx");
+            let mut command = Command::new(npx_bin());
             command
                 .arg("vite")
                 .arg("build")
@@ -590,7 +590,7 @@ fn run_npm_install(dir: &Path, warnings: &mut Vec<String>) -> Result<bool> {
     if dir.join("node_modules").exists() {
         return Ok(true);
     }
-    let mut command = Command::new("npm");
+    let mut command = Command::new(npm_bin());
     command
         .arg("install")
         .arg("--ignore-scripts")
@@ -635,6 +635,22 @@ fn run_command_to_stderr(command: &mut Command) -> Result<ExitStatus> {
         std::io::stderr().write_all(&output.stderr)?;
     }
     Ok(output.status)
+}
+
+fn npm_bin() -> &'static str {
+    if cfg!(windows) {
+        "npm.cmd"
+    } else {
+        "npm"
+    }
+}
+
+fn npx_bin() -> &'static str {
+    if cfg!(windows) {
+        "npx.cmd"
+    } else {
+        "npx"
+    }
 }
 
 fn read_pack_config(root: &Path) -> Result<PackConfig> {

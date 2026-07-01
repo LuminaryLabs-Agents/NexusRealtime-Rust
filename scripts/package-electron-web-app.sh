@@ -9,6 +9,23 @@ PACKAGE_DIR="$(cd "${PACKAGE_DIR}" && pwd)"
 mkdir -p "${OUT_ROOT}"
 OUT_ROOT="$(cd "${OUT_ROOT}" && pwd)"
 MANIFEST="${PACKAGE_DIR}/nexus-package-manifest.json"
+NPM_BIN="${NPM_BIN:-npm}"
+NPX_BIN="${NPX_BIN:-npx}"
+
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*)
+    if command -v npm.cmd >/dev/null 2>&1; then
+      NPM_BIN="npm.cmd"
+    else
+      NPM_BIN="npm.cmd"
+    fi
+    if command -v npx.cmd >/dev/null 2>&1; then
+      NPX_BIN="npx.cmd"
+    else
+      NPX_BIN="npx.cmd"
+    fi
+    ;;
+esac
 
 META="$(python3 - "${MANIFEST}" <<'PY'
 import json
@@ -55,12 +72,12 @@ payload["version"] = "0.1.0"
 path.write_text(json.dumps(payload, indent=2) + "\n")
 PY
 
-(cd "${WORK_DIR}" && npm install)
+(cd "${WORK_DIR}" && "${NPM_BIN}" install)
 
 if [ -n "${ELECTRON_PLATFORM}" ]; then
-  (cd "${WORK_DIR}" && npx electron-packager . "${BUNDLE_NAME}" --out "${BUNDLE_OUT}" --overwrite --asar=false --platform "${ELECTRON_PLATFORM}")
+  (cd "${WORK_DIR}" && "${NPX_BIN}" electron-packager . "${BUNDLE_NAME}" --out "${BUNDLE_OUT}" --overwrite --asar=false --platform "${ELECTRON_PLATFORM}")
 else
-  (cd "${WORK_DIR}" && npx electron-packager . "${BUNDLE_NAME}" --out "${BUNDLE_OUT}" --overwrite --asar=false)
+  (cd "${WORK_DIR}" && "${NPX_BIN}" electron-packager . "${BUNDLE_NAME}" --out "${BUNDLE_OUT}" --overwrite --asar=false)
 fi
 
 BUNDLE_PATH="$(find "${BUNDLE_OUT}" -mindepth 1 -maxdepth 1 -type d | head -n 1)"

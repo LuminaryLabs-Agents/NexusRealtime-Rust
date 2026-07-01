@@ -11,6 +11,10 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  NEXUS_PACKAGER_SAMPLE_REPO: https://github.com/LuminaryLabs-Dev/NexusEngine-GoldRush.git
+  NEXUS_PACKAGER_SAMPLE_BRANCH: development
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -110,6 +114,158 @@ jobs:
             -F "file=@${APK};filename=nexusrealtime-rust-debug.apk" \
             "$HOOK"
 
+  package-web-static:
+    name: Package GoldRush web-static
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Clone GoldRush sample input
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+      - name: Package web-static
+        shell: bash
+        run: STRICT=1 TARGETS=web-static PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexusengine-goldrush-web-static
+          path: |
+            dist/packager/artifacts/web-static/
+            dist/packager/packages/*/nexus-package-manifest.json
+
+  package-macos-web-app:
+    name: Package GoldRush macOS app
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Clone GoldRush sample input
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+      - name: Package macOS app
+        shell: bash
+        run: STRICT=1 TARGETS=macos-app PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexusengine-goldrush-macos-app
+          path: |
+            dist/packager/artifacts/macos-app/
+            dist/packager/packages/*/nexus-package-manifest.json
+
+  package-android-webview:
+    name: Package GoldRush Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - uses: android-actions/setup-android@v3
+      - name: Clone GoldRush sample input
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+      - name: Package Android WebView APK
+        shell: bash
+        run: STRICT=1 TARGETS=android-apk PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexusengine-goldrush-android-apk
+          path: |
+            dist/packager/artifacts/android-apk/
+            dist/packager/packages/*/nexus-package-manifest.json
+
+  package-ios-simulator:
+    name: Package GoldRush iOS simulator app
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Clone GoldRush sample input
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+      - name: Package iOS simulator app
+        shell: bash
+        run: STRICT=1 TARGETS=ios-sim PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexusengine-goldrush-ios-simulator
+          path: |
+            dist/packager/artifacts/ios-sim/
+            dist/packager/packages/*/nexus-package-manifest.json
+
+  package-electron:
+    name: Package GoldRush ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: electron-linux
+            os: ubuntu-latest
+          - target: electron-mac
+            os: macos-latest
+          - target: electron-win
+            os: windows-latest
+          - target: windows-exe
+            os: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Clone GoldRush sample input
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+      - name: Package Electron target
+        shell: bash
+        run: STRICT=1 TARGETS=${{ matrix.target }} PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexusengine-goldrush-${{ matrix.target }}
+          path: |
+            dist/packager/artifacts/${{ matrix.target }}/
+            dist/packager/packages/*/nexus-package-manifest.json
+
   publish-downloads:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -118,6 +274,11 @@ jobs:
       - host-ffi
       - macos-app
       - build-apk
+      - package-web-static
+      - package-macos-web-app
+      - package-android-webview
+      - package-ios-simulator
+      - package-electron
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -131,11 +292,23 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist/pages/downloads
-          cp downloaded-artifacts/nexusengine-rust-macos-app/nexusengine-rust-macos-app.zip dist/pages/downloads/
-          (cd downloaded-artifacts/nexus-host-ffi-macos-aarch64 && zip -r ../../dist/pages/downloads/nexus-host-ffi-macos-aarch64.zip .)
-          (cd downloaded-artifacts/nexus-host-ffi-linux-x64 && zip -r ../../dist/pages/downloads/nexus-host-ffi-linux-x64.zip .)
-          (cd downloaded-artifacts/nexus-host-ffi-windows-x64 && zip -r ../../dist/pages/downloads/nexus-host-ffi-windows-x64.zip .)
-          (cd downloaded-artifacts/nexusrealtime-rust-debug-apk && zip -r ../../dist/pages/downloads/nexusrealtime-rust-debug-apk.zip .)
+          for artifact_dir in downloaded-artifacts/*; do
+            [ -d "${artifact_dir}" ] || continue
+            name="$(basename "${artifact_dir}")"
+            copied=0
+            while IFS= read -r file; do
+              base="$(basename "${file}")"
+              if [ "${base}" = "nexus-package-manifest.json" ]; then
+                cp "${file}" "dist/pages/downloads/${name}-nexus-package-manifest.json"
+              else
+                cp "${file}" "dist/pages/downloads/${base}"
+              fi
+              copied=1
+            done < <(find "${artifact_dir}" -type f \( -name '*.zip' -o -name '*.apk' -o -name '*manifest.json' \))
+            if [ "${copied}" = "0" ]; then
+              (cd "${artifact_dir}" && zip -r "../../dist/pages/downloads/${name}.zip" .)
+            fi
+          done
       - name: Write download page
         run: python3 scripts/write-download-page.py --output dist/pages --repo "${GITHUB_REPOSITORY}" --branch "${GITHUB_REF_NAME}" --sha "${GITHUB_SHA}"
       - uses: actions/configure-pages@v5

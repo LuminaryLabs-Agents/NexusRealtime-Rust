@@ -20,3 +20,9 @@ TBD from repo context and user request.
 - 2026-06-30 20:42:00 America/New_York - Committed and pushed `Build downloadable native artifacts` to `origin/main` as `32d0d29`.
 - 2026-06-30 20:50:00 America/New_York - GitHub Actions run `28485616343` passed all jobs and deployed Pages downloads.
 - 2026-06-30 20:50:00 America/New_York - Public download page, manifest, macOS app zip, macOS/Linux/Windows FFI zips, and Android APK zip all returned HTTP 200.
+- 2026-07-01 00:00:00 America/New_York - Started Universal NexusRealtime Packager implementation: Rust recognizer/stager, web bundle normalization, generic native wrappers, target packaging scripts, CI lanes, README downloads, and `.agent` tracking.
+- 2026-07-01 00:00:00 America/New_York - `cargo test --workspace` passed after adding `nexus-packager` and `nexus-static-server`; focused `cargo test -p nexus-packager -p nexus-static-server` also passed after final edits.
+- 2026-07-01 00:00:00 America/New_York - `nexus-packager inspect` recognized GoldRush as `nexusrealtime-vite` without modifying the GoldRush worktree.
+- 2026-07-01 00:00:00 America/New_York - `make package-goldrush` produced local web-static and macOS app artifacts; follow-up direct wrapper runs produced iOS simulator and Electron macOS zips.
+- 2026-07-01 00:00:00 America/New_York - Android WebView APK packaging is wired but local validation was blocked by missing `ANDROID_HOME`; CI Android runner is configured to provide the SDK.
+- 2026-07-01 00:00:00 America/New_York - Launched generated GoldRush macOS `.app`; visible screenshot proof showed the GoldRush 3D scene rendering in the packaged app.

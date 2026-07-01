@@ -1,0 +1,27 @@
+plugins {
+    id 'com.android.application'
+}
+
+import groovy.json.JsonSlurper
+
+def manifestFile = file('src/main/assets/app/nexus-package-manifest.json')
+def nx = manifestFile.exists() ? new JsonSlurper().parse(manifestFile) : [
+    appId: 'dev.luminarylabs.nexuspackaged.placeholder',
+    appName: 'Nexus Packaged App'
+]
+
+android {
+    namespace 'dev.luminarylabs.nexuspackaged'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId nx.appId ?: 'dev.luminarylabs.nexuspackaged.placeholder'
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName '0.1.0'
+        manifestPlaceholders = [
+            appLabel: nx.appName ?: 'Nexus Packaged App'
+        ]
+    }
+}

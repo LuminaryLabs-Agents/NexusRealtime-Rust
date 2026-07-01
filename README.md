@@ -73,12 +73,52 @@ Expected latest files after a successful workflow run:
 - `nexus-host-ffi-linux-x64.zip`
 - `nexus-host-ffi-windows-x64.zip`
 - `nexusrealtime-rust-debug-apk.zip`
+- `nexusengine-goldrush-web-static.zip`
+- `nexusengine-goldrush-macos-app.zip`
+- `nexusengine-goldrush-android-debug.apk`
+- `nexusengine-goldrush-ios-simulator-app.zip`
+- `nexusengine-goldrush-windows-exe.zip`
+- `nexusengine-goldrush-electron-mac.zip`
+- `nexusengine-goldrush-electron-win.zip`
+- `nexusengine-goldrush-electron-linux.zip`
+- `nexusengine-goldrush-nexus-package-manifest.json`
 
 Local build commands:
 
 ```bash
 make macos-app
 make host-ffi
+make package-nexus PROJECT=/path/to/nexus-project
+make package-goldrush
+make package-downloads
+```
+
+Direct packager commands:
+
+```bash
+cargo run -p nexus-packager -- inspect /path/to/repo --json
+cargo run -p nexus-packager -- build /path/to/repo --target web-static --out dist/packager
+cargo run -p nexus-packager -- package /path/to/repo --targets macos-app,android-apk,ios-sim,windows-exe,electron,web-static
+```
+
+`nexus-packager` never builds inside the input project. It stages a copy in
+`dist/packager/work/<slug>/source`, excluding `.git`, `node_modules`, `dist`,
+`target`, `output`, and `.playwright-cli`, then writes a normalized web bundle
+and `nexus-package-manifest.json` under `dist/packager/packages/<slug>/`.
+
+Optional project config can be supplied in `nexus.pack.json`:
+
+```json
+{
+  "name": "NexusEngine GoldRush",
+  "appId": "dev.luminarylabs.nexuspackaged.goldrush",
+  "entry": "index.html",
+  "kind": "nexusrealtime-vite",
+  "buildCommand": "npm run build",
+  "webOutDir": "dist",
+  "targets": ["web-static", "macos-app"],
+  "assetBase": "./"
+}
 ```
 
 ## Build branch policy

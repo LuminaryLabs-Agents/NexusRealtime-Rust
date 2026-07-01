@@ -11,3 +11,5 @@ Track this repository as a build-only native Rust host surface. Current work sho
 - First target: build a small macOS `.app` that uses the Rust host backend and can be opened on the user's Mac.
 - Follow-on target: build dynamic-library artifacts for platform lanes through GitHub Actions.
 - Workflow output should be downloadable from the repository after branch pushes.
+- Current target: make `NexusEngine-Rust` a Universal NexusRealtime Packager that can recognize a NexusRealtime/Vite/static entrypoint, build in an isolated staging copy, and emit downloadable cross-device packages.
+- Game/app repos such as `NexusEngine-GoldRush` are package inputs only and must remain read-only unless the user explicitly requests changes there.

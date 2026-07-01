@@ -14,7 +14,9 @@ members = [
   "crates/nexus-xr-interaction",
   "crates/nexus-render-gles",
   "crates/nexus-openxr-host",
-  "crates/nexus-host-ffi"
+  "crates/nexus-host-ffi",
+  "crates/nexus-static-server",
+  "crates/nexus-packager"
 ]
 resolver = "2"
 
@@ -29,3 +31,5 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 once_cell = "1.19"
 jni = "0.21"
+sha2 = "0.10"
+zip = { version = "2.2", default-features = false, features = ["deflate"] }

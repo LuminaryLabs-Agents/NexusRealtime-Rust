@@ -1,0 +1,13 @@
+{
+  "name": "nexus-packaged-electron-host",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "package": "electron-packager . NexusPackagedApp --out dist --overwrite --asar=false"
+  },
+  "devDependencies": {
+    "@electron/packager": "^18.3.6",
+    "electron": "^31.7.7"
+  }
+}

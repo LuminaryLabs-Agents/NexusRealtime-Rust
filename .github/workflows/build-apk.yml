@@ -1,13 +1,74 @@
-name: Build APK
+name: Build Artifacts
 
 on:
   push:
     branches:
-      - build
-      - 'build/**'
+      - '**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Test workspace
+        run: cargo test --workspace
+
+  host-ffi:
+    name: Host FFI (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: linux-x64
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            artifact: nexus-host-ffi-linux-x64
+            file: libnexus_host_ffi.so
+          - name: windows-x64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            artifact: nexus-host-ffi-windows-x64
+            file: nexus_host_ffi.dll
+          - name: macos-aarch64
+            os: macos-latest
+            target: aarch64-apple-darwin
+            artifact: nexus-host-ffi-macos-aarch64
+            file: libnexus_host_ffi.dylib
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Build host FFI library
+        shell: bash
+        run: bash scripts/package-host-ffi.sh "${{ matrix.target }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/host-ffi/${{ matrix.target }}/
+
+  macos-app:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build macOS app
+        run: make macos-app
+      - name: Zip macOS app
+        run: ditto -c -k --keepParent dist/macos/NexusEngineRustDemo.app nexusengine-rust-macos-app.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexusengine-rust-macos-app
+          path: nexusengine-rust-macos-app.zip
+
   build-apk:
     runs-on: ubuntu-latest
     env:
@@ -48,3 +109,38 @@ jobs:
             -F "payload_json={\"content\":\"NexusRealtime Rust APK build ${GITHUB_SHA}\"}" \
             -F "file=@${APK};filename=nexusrealtime-rust-debug.apk" \
             "$HOOK"
+
+  publish-downloads:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - host-ffi
+      - macos-app
+      - build-apk
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: downloaded-artifacts
+      - name: Stage download files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/pages/downloads
+          cp downloaded-artifacts/nexusengine-rust-macos-app/nexusengine-rust-macos-app.zip dist/pages/downloads/
+          (cd downloaded-artifacts/nexus-host-ffi-macos-aarch64 && zip -r ../../dist/pages/downloads/nexus-host-ffi-macos-aarch64.zip .)
+          (cd downloaded-artifacts/nexus-host-ffi-linux-x64 && zip -r ../../dist/pages/downloads/nexus-host-ffi-linux-x64.zip .)
+          (cd downloaded-artifacts/nexus-host-ffi-windows-x64 && zip -r ../../dist/pages/downloads/nexus-host-ffi-windows-x64.zip .)
+          (cd downloaded-artifacts/nexusrealtime-rust-debug-apk && zip -r ../../dist/pages/downloads/nexusrealtime-rust-debug-apk.zip .)
+      - name: Write download page
+        run: python3 scripts/write-download-page.py --output dist/pages --repo "${GITHUB_REPOSITORY}" --branch "${GITHUB_REF_NAME}" --sha "${GITHUB_SHA}"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/pages
+      - id: deployment
+        uses: actions/deploy-pages@v4

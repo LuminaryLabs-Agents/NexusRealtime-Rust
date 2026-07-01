@@ -13,7 +13,8 @@ members = [
   "crates/nexus-xr-input",
   "crates/nexus-xr-interaction",
   "crates/nexus-render-gles",
-  "crates/nexus-openxr-host"
+  "crates/nexus-openxr-host",
+  "crates/nexus-host-ffi"
 ]
 resolver = "2"
 

@@ -59,6 +59,28 @@ Run the composition example with:
 node local-kits/examples/native-host-composition.mjs
 ```
 
+## Downloads
+
+Branch pushes build deployable artifacts through GitHub Actions and publish the latest download page here:
+
+- Downloads page: [https://luminarylabs-agents.github.io/NexusEngine-Rust/downloads/](https://luminarylabs-agents.github.io/NexusEngine-Rust/downloads/)
+- Artifact manifest: [https://luminarylabs-agents.github.io/NexusEngine-Rust/downloads/index.json](https://luminarylabs-agents.github.io/NexusEngine-Rust/downloads/index.json)
+
+Expected latest files after a successful workflow run:
+
+- `nexusengine-rust-macos-app.zip`
+- `nexus-host-ffi-macos-aarch64.zip`
+- `nexus-host-ffi-linux-x64.zip`
+- `nexus-host-ffi-windows-x64.zip`
+- `nexusrealtime-rust-debug-apk.zip`
+
+Local build commands:
+
+```bash
+make macos-app
+make host-ffi
+```
+
 ## Build branch policy
 
 ```txt

@@ -128,9 +128,7 @@ jobs:
           python-version: '3.x'
       - name: Clone GoldRush sample input
         shell: bash
-        run: |
-          set -euo pipefail
-          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+        run: bash scripts/clone-goldrush-sample.sh sample/NexusEngine-GoldRush
       - name: Package web-static
         shell: bash
         run: STRICT=1 TARGETS=web-static PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
@@ -155,9 +153,7 @@ jobs:
           python-version: '3.x'
       - name: Clone GoldRush sample input
         shell: bash
-        run: |
-          set -euo pipefail
-          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+        run: bash scripts/clone-goldrush-sample.sh sample/NexusEngine-GoldRush
       - name: Package macOS app
         shell: bash
         run: STRICT=1 TARGETS=macos-app PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
@@ -187,9 +183,7 @@ jobs:
       - uses: android-actions/setup-android@v3
       - name: Clone GoldRush sample input
         shell: bash
-        run: |
-          set -euo pipefail
-          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+        run: bash scripts/clone-goldrush-sample.sh sample/NexusEngine-GoldRush
       - name: Package Android WebView APK
         shell: bash
         run: STRICT=1 TARGETS=android-apk PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
@@ -214,9 +208,7 @@ jobs:
           python-version: '3.x'
       - name: Clone GoldRush sample input
         shell: bash
-        run: |
-          set -euo pipefail
-          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+        run: bash scripts/clone-goldrush-sample.sh sample/NexusEngine-GoldRush
       - name: Package iOS simulator app
         shell: bash
         run: STRICT=1 TARGETS=ios-sim PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh
@@ -253,9 +245,7 @@ jobs:
           python-version: '3.x'
       - name: Clone GoldRush sample input
         shell: bash
-        run: |
-          set -euo pipefail
-          git clone --branch "${NEXUS_PACKAGER_SAMPLE_BRANCH}" --depth 1 "${NEXUS_PACKAGER_SAMPLE_REPO}" sample/NexusEngine-GoldRush
+        run: bash scripts/clone-goldrush-sample.sh sample/NexusEngine-GoldRush
       - name: Package Electron target
         shell: bash
         run: STRICT=1 TARGETS=${{ matrix.target }} PROJECT=sample/NexusEngine-GoldRush bash scripts/package-nexus-project.sh

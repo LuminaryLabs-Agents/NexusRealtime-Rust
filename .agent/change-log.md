@@ -26,3 +26,4 @@ TBD from repo context and user request.
 - 2026-07-01 00:00:00 America/New_York - `make package-goldrush` produced local web-static and macOS app artifacts; follow-up direct wrapper runs produced iOS simulator and Electron macOS zips.
 - 2026-07-01 00:00:00 America/New_York - Android WebView APK packaging is wired but local validation was blocked by missing `ANDROID_HOME`; CI Android runner is configured to provide the SDK.
 - 2026-07-01 00:00:00 America/New_York - Launched generated GoldRush macOS `.app`; visible screenshot proof showed the GoldRush 3D scene rendering in the packaged app.
+- 2026-07-01 00:00:00 America/New_York - First pushed packager workflow showed Windows-only GoldRush clone failures; added sparse clone helper with `core.longpaths` and build-needed checkout exclusions for retry.
